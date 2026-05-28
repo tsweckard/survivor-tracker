@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+
+# Backend (Rails)
+backend/log/*.log
+backend/tmp/
+backend/storage/
+backend/db/*.sqlite3
+backend/db/*.sqlite3-shm
+backend/db/*.sqlite3-wal
+backend/public/assets
+backend/config/master.key
+backend/config/credentials/*.key
+backend/.env*
+
+# Frontend (React/Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/.env*
