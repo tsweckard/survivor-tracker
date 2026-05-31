@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 interface SeasonStore {
   seasonId: number | null
-  setSeasonId: (id: number) => void
+  setSeasonId: (id: number | null) => void
 }
 
 export const useSeasonStore = create<SeasonStore>((set) => ({

@@ -1,5 +1,8 @@
 import { apiFetch } from './api'
-import type { Season, Tribe, Player } from '../types'
+import type { Season, SeasonSummary, Tribe, Player } from '../types'
+
+export const listSeasons = () =>
+  apiFetch<SeasonSummary[]>('/seasons')
 
 export const createSeason = (name: string) =>
   apiFetch<Season>('/seasons', { method: 'POST', body: JSON.stringify({ season: { name } }) })

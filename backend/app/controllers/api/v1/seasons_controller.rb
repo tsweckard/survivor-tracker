@@ -3,6 +3,11 @@ module Api
     class SeasonsController < ApplicationController
       before_action :set_season, only: [:show, :activate]
 
+      def index
+        seasons = Season.order(created_at: :desc)
+        render json: seasons.as_json(only: [:id, :name, :status, :game_phase])
+      end
+
       def create
         season = Season.create!(season_params)
         render json: season_json(season), status: :created

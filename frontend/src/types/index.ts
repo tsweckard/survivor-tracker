@@ -1,3 +1,10 @@
+export interface SeasonSummary {
+  id: number
+  name: string
+  status: 'setup' | 'active' | 'completed'
+  game_phase: 'pre_merge' | 'merged' | 'final_tribal'
+}
+
 export interface Season {
   id: number
   name: string
