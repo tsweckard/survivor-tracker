@@ -17,3 +17,10 @@ backend/.env*
 frontend/node_modules/
 frontend/dist/
 frontend/.env*
+
+# Playwright
+frontend/test-results/
+frontend/playwright-report/
+frontend/.playwright-mcp/
+frontend/*.png
+frontend/*.jpg
