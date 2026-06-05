@@ -8,10 +8,10 @@ const STATUS_LABEL: Record<SeasonSummary['status'], string> = {
   completed: 'Completed',
 }
 
-const STATUS_COLOR: Record<SeasonSummary['status'], string> = {
-  setup: 'text-yellow-600',
-  active: 'text-green-600',
-  completed: 'text-[var(--text)]',
+const STATUS_BADGE: Record<SeasonSummary['status'], string> = {
+  setup: 'badge badge-warning',
+  active: 'badge badge-success',
+  completed: 'badge badge-neutral',
 }
 
 export default function SeasonList({ onNew, onSelect }: { onNew: () => void; onSelect: (s: SeasonSummary) => void }) {
@@ -23,20 +23,17 @@ export default function SeasonList({ onNew, onSelect }: { onNew: () => void; onS
   return (
     <div className="p-8 max-w-lg">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="!mb-0">Seasons</h1>
-        <button
-          onClick={onNew}
-          className="px-4 py-2 bg-[var(--accent)] text-white rounded"
-        >
+        <h1 className="text-4xl font-bold m-0">Seasons</h1>
+        <button onClick={onNew} className="btn btn-primary">
           + New Season
         </button>
       </div>
 
-      {isLoading && <p className="text-[var(--text)]">Loading…</p>}
-      {error && <p className="text-red-500 text-sm">{(error as Error).message}</p>}
+      {isLoading && <p>Loading…</p>}
+      {error && <p className="text-error text-sm">{(error as Error).message}</p>}
 
       {seasons && seasons.length === 0 && (
-        <p className="text-[var(--text)]">No seasons yet. Create one to get started.</p>
+        <p>No seasons yet. Create one to get started.</p>
       )}
 
       {seasons && seasons.length > 0 && (
@@ -45,10 +42,10 @@ export default function SeasonList({ onNew, onSelect }: { onNew: () => void; onS
             <li key={season.id}>
               <button
                 onClick={() => onSelect(season)}
-                className="w-full text-left flex items-center justify-between px-4 py-3 border border-[var(--border)] rounded hover:border-[var(--accent)] transition-colors"
+                className="btn btn-outline w-full justify-between"
               >
-                <span className="font-medium text-[var(--text-h)]">{season.name}</span>
-                <span className={`text-sm ${STATUS_COLOR[season.status]}`}>
+                <span className="font-medium">{season.name}</span>
+                <span className={STATUS_BADGE[season.status]}>
                   {STATUS_LABEL[season.status]}
                 </span>
               </button>

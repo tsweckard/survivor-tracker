@@ -13,24 +13,24 @@ export default function CreateSeasonStep({ onCreated, onBack }: { onCreated: (id
   return (
     <div className="p-8 max-w-lg">
       {onBack && <BackButton onClick={onBack} />}
-      <h1>New Season</h1>
+      <h1 className="text-4xl font-bold mb-6">New Season</h1>
       <form onSubmit={(e) => { e.preventDefault(); mutation.mutate() }} className="space-y-4">
-        <div>
-          <label htmlFor="season-name" className="block text-sm font-medium mb-1">Season name</label>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Season name</legend>
           <input
             id="season-name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full border border-[var(--border)] rounded px-3 py-2 bg-[var(--bg)]"
+            className="input input-bordered w-full"
           />
-        </div>
-        {mutation.error && <p className="text-red-500 text-sm">{(mutation.error as Error).message}</p>}
+        </fieldset>
+        {mutation.error && <p className="text-error text-sm">{(mutation.error as Error).message}</p>}
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="px-4 py-2 bg-[var(--accent)] text-white rounded disabled:opacity-50"
+          className="btn btn-primary"
         >
           {mutation.isPending ? 'Creating…' : 'Create Season'}
         </button>

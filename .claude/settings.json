@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(.env)",
+      "Edit(.env)",
+      "Write(.env)",
+      "Read(.env.*)",
+      "Edit(.env.*)",
+      "Write(.env.*)",
+      "Read(**/*.pem)",
+      "Edit(**/*.pem)",
+      "Write(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(**/*.key)",
+      "Write(**/*.key)",
+      "Read(**/*.p12)",
+      "Edit(**/*.p12)",
+      "Write(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Edit(**/*.pfx)",
+      "Write(**/*.pfx)",
+      "Read(**/*.keystore)",
+      "Edit(**/*.keystore)",
+      "Write(**/*.keystore)",
+      "Read(**/*.jks)",
+      "Edit(**/*.jks)",
+      "Write(**/*.jks)",
+      "Read(**/*secrets*.json)",
+      "Edit(**/*secrets*.json)",
+      "Write(**/*secrets*.json)",
+      "Read(**/*.secret)",
+      "Edit(**/*.secret)",
+      "Write(**/*.secret)",
+      "Read(**/appsettings.Production.json)",
+      "Edit(**/appsettings.Production.json)",
+      "Write(**/appsettings.Production.json)",
+      "Read(**/appsettings.Staging.json)",
+      "Edit(**/appsettings.Staging.json)",
+      "Write(**/appsettings.Staging.json)"
+    ]
+  }
+}
