@@ -3,6 +3,14 @@ export interface SeasonSummary {
   name: string
   status: 'setup' | 'active' | 'completed'
   game_phase: 'pre_merge' | 'merged' | 'final_tribal'
+  season_number: number | null
+  location: string | null
+  premiered_on: string | null
+  ended_on: string | null
+  tribe_colors: string[]
+  player_count: number
+  booted_count: number
+  episode_count: number
 }
 
 export interface Season {
@@ -10,6 +18,10 @@ export interface Season {
   name: string
   status: 'setup' | 'active' | 'completed'
   game_phase: 'pre_merge' | 'merged' | 'final_tribal'
+  season_number: number | null
+  location: string | null
+  premiered_on: string | null
+  ended_on: string | null
   tribes: Tribe[]
   players: Player[]
 }

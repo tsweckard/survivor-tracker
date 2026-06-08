@@ -4,8 +4,15 @@ import type { Season, SeasonSummary, Tribe, Player } from '../types'
 export const listSeasons = () =>
   apiFetch<SeasonSummary[]>('/seasons')
 
-export const createSeason = (name: string) =>
-  apiFetch<Season>('/seasons', { method: 'POST', body: JSON.stringify({ season: { name } }) })
+export interface SeasonPayload {
+  name: string
+  season_number?: number | null
+  location?: string | null
+  premiered_on?: string | null
+}
+
+export const createSeason = (data: SeasonPayload) =>
+  apiFetch<Season>('/seasons', { method: 'POST', body: JSON.stringify({ season: data }) })
 
 export const getSeason = (id: number) =>
   apiFetch<Season>(`/seasons/${id}`)

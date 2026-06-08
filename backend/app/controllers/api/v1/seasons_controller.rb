@@ -4,8 +4,8 @@ module Api
       before_action :set_season, only: [:show, :activate]
 
       def index
-        seasons = Season.order(created_at: :desc)
-        render json: seasons.as_json(only: [:id, :name, :status, :game_phase])
+        seasons = Season.includes(:tribes, :players, :episodes).order(created_at: :desc)
+        render json: seasons.map { |s| season_summary_json(s) }
       end
 
       def create
@@ -32,12 +32,22 @@ module Api
       end
 
       def season_params
-        params.require(:season).permit(:name)
+        params.require(:season).permit(:name, :season_number, :location, :premiered_on, :ended_on)
+      end
+
+      def season_summary_json(season)
+        season.as_json(only: [:id, :name, :status, :game_phase, :season_number, :location, :premiered_on, :ended_on])
+          .merge(
+            tribe_colors: season.tribes.map(&:color),
+            player_count: season.players.size,
+            booted_count: season.players.count { |p| %w[jury eliminated].include?(p.status) },
+            episode_count: season.episodes.size
+          )
       end
 
       def season_json(season)
         season.as_json(
-          only: [:id, :name, :status, :game_phase],
+          only: [:id, :name, :status, :game_phase, :season_number, :location, :premiered_on, :ended_on],
           include: {
             tribes:  { only: [:id, :name, :color, :status] },
             players: { only: [:id, :name, :tribe_id, :status,
