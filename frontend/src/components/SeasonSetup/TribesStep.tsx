@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getSeason, createTribe, deleteTribe } from '../../services/seasonService'
-import BackButton from './BackButton'
 
-export default function TribesStep({ seasonId, onNext, onBack }: { seasonId: number; onNext: () => void; onBack?: () => void }) {
+export default function TribesStep({ seasonId }: { seasonId: number }) {
   const queryClient = useQueryClient()
   const [name, setName] = useState('')
   const [color, setColor] = useState('#3b82f6')
@@ -29,7 +28,6 @@ export default function TribesStep({ seasonId, onNext, onBack }: { seasonId: num
 
   return (
     <div className="p-8 max-w-lg">
-      {onBack && <BackButton onClick={onBack} />}
       <h1 className="text-4xl font-bold mb-6">Add Tribes</h1>
 
       <ul className="space-y-2 mb-6">
@@ -86,9 +84,6 @@ export default function TribesStep({ seasonId, onNext, onBack }: { seasonId: num
         {deleteMutation.error && <p className="text-error text-sm">{(deleteMutation.error as Error).message}</p>}
       </form>
 
-      <button onClick={onNext} className="btn btn-outline">
-        Next: Add Players →
-      </button>
     </div>
   )
 }

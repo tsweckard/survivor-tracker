@@ -1,29 +1,31 @@
 import { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import { createSeason } from '../../services/seasonService'
-import BackButton from './BackButton'
+import type { SeasonPayload } from '../../services/seasonService'
 
-export default function CreateSeasonStep({ onCreated, onBack }: { onCreated: (id: number) => void; onBack?: () => void }) {
+export default function CreateSeasonStep({ onSubmit, error }: {
+  onSubmit: (data: SeasonPayload) => void
+  error?: string
+}) {
   const [name, setName] = useState('')
   const [seasonNumber, setSeasonNumber] = useState('')
   const [location, setLocation] = useState('')
   const [premieredOn, setPremieredOn] = useState('')
 
-  const mutation = useMutation({
-    mutationFn: () => createSeason({
-      name,
-      season_number: seasonNumber ? parseInt(seasonNumber) : null,
-      location: location || null,
-      premiered_on: premieredOn || null,
-    }),
-    onSuccess: (season) => onCreated(season.id),
-  })
-
   return (
     <div className="p-8 max-w-lg">
-      {onBack && <BackButton onClick={onBack} />}
       <h1 className="text-4xl font-bold mb-6">New Season</h1>
-      <form onSubmit={(e) => { e.preventDefault(); mutation.mutate() }} className="space-y-4">
+      <form
+        id="create-season-form"
+        onSubmit={(e) => {
+          e.preventDefault()
+          onSubmit({
+            name,
+            season_number: seasonNumber ? parseInt(seasonNumber) : null,
+            location: location || null,
+            premiered_on: premieredOn || null,
+          })
+        }}
+        className="space-y-4"
+      >
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Season name <span className="text-error">*</span></legend>
           <input
@@ -74,14 +76,7 @@ export default function CreateSeasonStep({ onCreated, onBack }: { onCreated: (id
           />
         </fieldset>
 
-        {mutation.error && <p className="text-error text-sm">{(mutation.error as Error).message}</p>}
-        <button
-          type="submit"
-          disabled={mutation.isPending}
-          className="btn btn-primary"
-        >
-          {mutation.isPending ? 'Creating…' : 'Create Season'}
-        </button>
+        {error && <p className="text-error text-sm">{error}</p>}
       </form>
     </div>
   )

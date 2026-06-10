@@ -1,21 +1,151 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useMutation } from '@tanstack/react-query'
 import { useSeasonStore } from '../../store/seasonStore'
-import SeasonLive from './SeasonLive'
+import { createSeason, activateSeason } from '../../services/seasonService'
 import CreateSeasonStep from './CreateSeasonStep'
+import SeasonInfoStep from './SeasonInfoStep'
 import TribesStep from './TribesStep'
 import PlayersStep from './PlayersStep'
+import SeasonLive from './SeasonLive'
+import BackButton from './BackButton'
+
+type Step = 1 | 2 | 3
+
+const TABS: { step: Step; label: string }[] = [
+  { step: 1, label: 'Season' },
+  { step: 2, label: 'Tribes' },
+  { step: 3, label: 'Players' },
+]
 
 export default function SeasonSetup({ existingSeasonId, onBack }: { existingSeasonId?: number; onBack?: () => void }) {
-  const [step, setStep] = useState<1 | 2 | 3>(existingSeasonId ? 2 : 1)
+  const [step, setStep] = useState<Step>(existingSeasonId ? 2 : 1)
   const [isLive, setIsLive] = useState(false)
   const { seasonId, setSeasonId } = useSeasonStore()
 
-  if (existingSeasonId && !seasonId) setSeasonId(existingSeasonId)
+  useEffect(() => {
+    if (existingSeasonId && !seasonId) setSeasonId(existingSeasonId)
+  }, [existingSeasonId])
 
   const activeSeasonId = seasonId ?? existingSeasonId!
 
+  const createMutation = useMutation({
+    mutationFn: createSeason,
+    onSuccess: (season) => { setSeasonId(season.id); setStep(2) },
+  })
+
+  const activateMutation = useMutation({
+    mutationFn: () => activateSeason(activeSeasonId),
+    onSuccess: () => setIsLive(true),
+  })
+
   if (isLive) return <SeasonLive onBack={onBack} />
-  if (step === 1) return <CreateSeasonStep onCreated={(id) => { setSeasonId(id); setStep(2) }} onBack={onBack} />
-  if (step === 2) return <TribesStep seasonId={activeSeasonId} onNext={() => setStep(3)} onBack={onBack} />
-  return <PlayersStep seasonId={activeSeasonId} onActivated={() => setIsLive(true)} onBack={onBack} />
+
+  function isTabEnabled(tabStep: Step): boolean {
+    if (tabStep === 1) return true
+    if (tabStep === 2) return !!activeSeasonId
+    return step >= 3
+  }
+
+  function isTabComplete(tabStep: Step): boolean {
+    if (tabStep === 1) return !!activeSeasonId
+    if (tabStep === 2) return step >= 3
+    return false
+  }
+
+  function goPrev() {
+    if (step === 2) setStep(1)
+    if (step === 3) setStep(2)
+  }
+
+  const showBack = step > 1 || !!onBack
+
+  return (
+    <div className="flex flex-col">
+      <div className="border-b border-base-300">
+        <div role="tablist" className="tabs justify-between px-8">
+          {TABS.map(({ step: tabStep, label }) => {
+            const enabled = isTabEnabled(tabStep)
+            const complete = isTabComplete(tabStep)
+            const active = step === tabStep
+            return (
+              <button
+                key={tabStep}
+                role="tab"
+                disabled={!enabled}
+                onClick={() => setStep(tabStep)}
+                className={[
+                  'flex-1 tab',
+                  active ? 'tab-active' : '',
+                  complete ? 'text-success' : '',
+                  !enabled ? 'tab-disabled' : '',
+                ].filter(Boolean).join(' ')}
+              >
+                {label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div>
+        {step === 1 && !activeSeasonId && (
+          <CreateSeasonStep
+            onSubmit={(data) => createMutation.mutate(data)}
+            error={createMutation.error ? (createMutation.error as Error).message : undefined}
+          />
+        )}
+        {step === 1 && activeSeasonId && (
+          <SeasonInfoStep seasonId={activeSeasonId} />
+        )}
+        {step === 2 && activeSeasonId && (
+          <TribesStep seasonId={activeSeasonId} />
+        )}
+        {step === 3 && activeSeasonId && (
+          <PlayersStep seasonId={activeSeasonId} />
+        )}
+      </div>
+
+      <div className="px-8 pb-8 flex items-center justify-between">
+        <div>
+          {showBack && <BackButton onClick={step > 1 ? goPrev : onBack!} />}
+        </div>
+        <div className="flex flex-col items-end gap-1">
+          {step === 1 && !activeSeasonId && (
+            <button
+              type="submit"
+              form="create-season-form"
+              disabled={createMutation.isPending}
+              className="btn btn-primary"
+            >
+              {createMutation.isPending ? 'Creating…' : 'Create Season'}
+            </button>
+          )}
+          {step === 1 && activeSeasonId && (
+            <button onClick={() => setStep(2)} className="btn btn-primary">
+              Next: Add Tribes →
+            </button>
+          )}
+          {step === 2 && (
+            <button onClick={() => setStep(3)} className="btn btn-outline">
+              Next: Add Players →
+            </button>
+          )}
+          {step === 3 && (
+            <>
+              {activateMutation.error && (
+                <p className="text-error text-sm">{(activateMutation.error as Error).message}</p>
+              )}
+              <button
+                onClick={() => activateMutation.mutate()}
+                disabled={activateMutation.isPending}
+                className="btn btn-success"
+              >
+                {activateMutation.isPending ? 'Activating…' : 'Activate Season'}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
 }

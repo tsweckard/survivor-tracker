@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getSeason, createPlayer, deletePlayer, activateSeason } from '../../services/seasonService'
-import BackButton from './BackButton'
+import { getSeason, createPlayer, deletePlayer } from '../../services/seasonService'
 
 type StatKey = 'athleticism' | 'social' | 'strategic' | 'likability' | 'loyalty'
 type Stats = Record<StatKey, number>
@@ -16,7 +15,7 @@ const STAT_FIELDS: { key: StatKey; label: string }[] = [
 
 const defaultStats: Stats = { athleticism: 5, social: 5, strategic: 5, likability: 5, loyalty: 5 }
 
-export default function PlayersStep({ seasonId, onActivated, onBack }: { seasonId: number; onActivated: () => void; onBack?: () => void }) {
+export default function PlayersStep({ seasonId }: { seasonId: number }) {
   const queryClient = useQueryClient()
   const [name, setName] = useState('')
   const [tribeId, setTribeId] = useState<string>('')
@@ -47,18 +46,10 @@ export default function PlayersStep({ seasonId, onActivated, onBack }: { seasonI
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['season', seasonId] }),
   })
 
-  const activateMutation = useMutation({
-    mutationFn: () => activateSeason(seasonId),
-    onSuccess: (data) => {
-      if (data.status === 'active') onActivated()
-    },
-  })
-
   const tribeMap = Object.fromEntries((season?.tribes ?? []).map((t) => [t.id, t]))
 
   return (
     <div className="p-8 max-w-2xl">
-      {onBack && <BackButton onClick={onBack} />}
       <h1 className="text-4xl font-bold mb-6">Add Players</h1>
 
       <ul className="space-y-2 mb-6">
@@ -83,7 +74,7 @@ export default function PlayersStep({ seasonId, onActivated, onBack }: { seasonI
         ))}
       </ul>
 
-      <form onSubmit={(e) => { e.preventDefault(); createMutation.mutate() }} className="space-y-4 mb-8">
+      <form onSubmit={(e) => { e.preventDefault(); createMutation.mutate() }} className="space-y-4">
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Name</legend>
           <input
@@ -139,15 +130,6 @@ export default function PlayersStep({ seasonId, onActivated, onBack }: { seasonI
           {createMutation.isPending ? 'Adding…' : 'Add Player'}
         </button>
       </form>
-
-      {activateMutation.error && <p className="text-error text-sm mb-2">{(activateMutation.error as Error).message}</p>}
-      <button
-        onClick={() => activateMutation.mutate()}
-        disabled={activateMutation.isPending}
-        className="btn btn-success"
-      >
-        {activateMutation.isPending ? 'Activating…' : 'Activate Season'}
-      </button>
     </div>
   )
 }
