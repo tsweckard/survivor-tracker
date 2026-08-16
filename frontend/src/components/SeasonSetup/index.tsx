@@ -53,7 +53,11 @@ export default function SeasonSetup({ existingSeasonId, onBack }: { existingSeas
   }
 
   function goPrev() {
-    if (step === 2) setStep(1)
+    if (step === 2) {
+      if (onBack) onBack()
+      else setStep(1)
+      return
+    }
     if (step === 3) setStep(2)
   }
 
