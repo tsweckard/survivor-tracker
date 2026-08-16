@@ -5,7 +5,7 @@ import { getSeason, createTribe, deleteTribe } from '../../services/seasonServic
 export default function TribesStep({ seasonId }: { seasonId: number }) {
   const queryClient = useQueryClient()
   const [name, setName] = useState('')
-  const [color, setColor] = useState('#3b82f6')
+  const [color, setColor] = useState('#10736C')
 
   const { data: season } = useQuery({
     queryKey: ['season', seasonId],
@@ -17,7 +17,7 @@ export default function TribesStep({ seasonId }: { seasonId: number }) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['season', seasonId] })
       setName('')
-      setColor('#3b82f6')
+      setColor('#10736C')
     },
   })
 
@@ -28,7 +28,7 @@ export default function TribesStep({ seasonId }: { seasonId: number }) {
 
   return (
     <div className="p-8 max-w-lg">
-      <h1 className="text-4xl font-bold mb-6">Add Tribes</h1>
+      <h1 className="text-4xl font-serif font-medium mb-6">Add Tribes</h1>
 
       <ul className="space-y-2 mb-6">
         {season?.tribes.map((tribe) => (

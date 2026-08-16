@@ -52,7 +52,7 @@ export default function SeasonCard({ season, onClick }: { season: SeasonSummary;
         </div>
 
         <div>
-          <h2 className="text-xl font-bold leading-tight">{season.name}</h2>
+          <h2 className="text-xl font-serif font-semibold leading-tight">{season.name}</h2>
           {(season.location || season.premiered_on) && (
             <p className="text-sm text-base-content/50 mt-1">
               {[season.location, season.premiered_on ? season.premiered_on.slice(0, 4) : null]

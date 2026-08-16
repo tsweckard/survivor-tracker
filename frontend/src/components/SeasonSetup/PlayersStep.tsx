@@ -50,7 +50,7 @@ export default function PlayersStep({ seasonId }: { seasonId: number }) {
 
   return (
     <div className="p-8 max-w-2xl">
-      <h1 className="text-4xl font-bold mb-6">Add Players</h1>
+      <h1 className="text-4xl font-serif font-medium mb-6">Add Players</h1>
 
       <ul className="space-y-2 mb-6">
         {season?.players.map((player) => (
@@ -113,7 +113,7 @@ export default function PlayersStep({ seasonId }: { seasonId: number }) {
                 max={10}
                 value={stats[key]}
                 onChange={(e) => setStats((s) => ({ ...s, [key]: parseInt(e.target.value) }))}
-                className="range w-full"
+                className="range range-primary w-full"
               />
             </fieldset>
           ))}

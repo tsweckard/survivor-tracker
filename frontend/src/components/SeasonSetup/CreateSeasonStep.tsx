@@ -12,7 +12,7 @@ export default function CreateSeasonStep({ onSubmit, error }: {
 
   return (
     <div className="p-8 max-w-lg">
-      <h1 className="text-4xl font-bold mb-6">New Season</h1>
+      <h1 className="text-4xl font-serif font-medium mb-6">New Season</h1>
       <form
         id="create-season-form"
         onSubmit={(e) => {

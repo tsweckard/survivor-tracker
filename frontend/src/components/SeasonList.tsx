@@ -13,7 +13,7 @@ export default function SeasonList({ onNew, onSelect }: { onNew: () => void; onS
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold m-0">Your Seasons</h1>
+        <h1 className="text-2xl font-serif font-medium m-0">Your Seasons</h1>
         <button onClick={onNew} className="btn btn-primary">+ New Season</button>
       </div>
 
