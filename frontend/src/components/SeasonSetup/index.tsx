@@ -141,7 +141,7 @@ export default function SeasonSetup({ existingSeasonId, onBack }: { existingSeas
             </button>
           )}
           {step === 2 && (
-            <button onClick={() => setStep(3)} className="btn btn-outline">
+            <button onClick={() => setStep(3)} className="btn btn-success">
               Next: Add Players →
             </button>
           )}
