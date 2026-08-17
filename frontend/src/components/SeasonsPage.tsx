@@ -1,21 +1,9 @@
-import { useState } from 'react'
-import { useSeasonStore } from '../store/seasonStore'
-import type { SeasonSummary } from '../types'
+import { useNavigationStore } from '../store/navigationStore'
 import SeasonSetup from './SeasonSetup'
 import SeasonList from './SeasonList'
 
-type Screen = 'home' | 'new-season' | 'existing-season'
-
 export default function SeasonsPage() {
-  const [screen, setScreen] = useState<Screen>('home')
-  const [selectedSeason, setSelectedSeason] = useState<SeasonSummary | null>(null)
-  const { setSeasonId } = useSeasonStore()
-
-  const goHome = () => {
-    setScreen('home')
-    setSelectedSeason(null)
-    setSeasonId(null)
-  }
+  const { screen, selectedSeason, goHome, goToNewSeason, goToExistingSeason } = useNavigationStore()
 
   if (screen === 'new-season') {
     return <SeasonSetup onBack={goHome} />
@@ -26,12 +14,6 @@ export default function SeasonsPage() {
   }
 
   return (
-    <SeasonList
-      onNew={() => setScreen('new-season')}
-      onSelect={(season) => {
-        setSelectedSeason(season)
-        setScreen('existing-season')
-      }}
-    />
+    <SeasonList onNew={goToNewSeason} onSelect={goToExistingSeason} />
   )
 }
