@@ -74,7 +74,7 @@ export default function SeasonSetup({ existingSeasonId, onBack }: { existingSeas
   const showBack = step > 1 || !!onBack
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1">
       <div className="border-b border-base-300">
         <div role="tablist" className="tabs justify-between px-8 divide-x divide-base-300">
           {TABS.map(({ step: tabStep, label }) => {
@@ -102,7 +102,7 @@ export default function SeasonSetup({ existingSeasonId, onBack }: { existingSeas
         </div>
       </div>
 
-      <div>
+      <div className="flex-1">
         {step === 1 && !activeSeasonId && (
           <CreateSeasonStep
             onSubmit={(data) => createMutation.mutate(data)}
@@ -120,45 +120,48 @@ export default function SeasonSetup({ existingSeasonId, onBack }: { existingSeas
         )}
       </div>
 
-      <div className="px-8 pb-8 flex items-center justify-between">
-        <div>
-          {showBack && <BackButton onClick={step > 1 ? goPrev : onBack!} />}
-        </div>
-        <div className="flex flex-col items-end gap-1">
-          {step === 1 && !activeSeasonId && (
-            <button
-              type="submit"
-              form="create-season-form"
-              disabled={createMutation.isPending}
-              className="btn btn-primary"
-            >
-              {createMutation.isPending ? 'Creating…' : 'Create Season'}
-            </button>
-          )}
-          {step === 1 && activeSeasonId && (
-            <button onClick={() => setStep(2)} className="btn btn-primary">
-              Next: Add Tribes →
-            </button>
-          )}
-          {step === 2 && (
-            <button onClick={() => setStep(3)} className="btn btn-success">
-              Next: Add Players →
-            </button>
-          )}
-          {step === 3 && (
-            <>
-              {activateMutation.error && (
-                <p className="text-error text-sm">{(activateMutation.error as Error).message}</p>
-              )}
+      <div>
+        <div className="mx-8 border-t border-base-300" />
+        <div className="px-8 pt-6 pb-8 flex items-center justify-between">
+          <div>
+            {showBack && <BackButton onClick={step > 1 ? goPrev : onBack!} />}
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            {step === 1 && !activeSeasonId && (
               <button
-                onClick={() => activateMutation.mutate()}
-                disabled={activateMutation.isPending}
-                className="btn btn-success"
+                type="submit"
+                form="create-season-form"
+                disabled={createMutation.isPending}
+                className="btn btn-primary"
               >
-                {activateMutation.isPending ? 'Activating…' : 'Activate Season'}
+                {createMutation.isPending ? 'Creating…' : 'Create Season'}
               </button>
-            </>
-          )}
+            )}
+            {step === 1 && activeSeasonId && (
+              <button onClick={() => setStep(2)} className="btn btn-primary">
+                Next: Add Tribes →
+              </button>
+            )}
+            {step === 2 && (
+              <button onClick={() => setStep(3)} className="btn btn-success">
+                Next: Add Players →
+              </button>
+            )}
+            {step === 3 && (
+              <>
+                {activateMutation.error && (
+                  <p className="text-error text-sm">{(activateMutation.error as Error).message}</p>
+                )}
+                <button
+                  onClick={() => activateMutation.mutate()}
+                  disabled={activateMutation.isPending}
+                  className="btn btn-success"
+                >
+                  {activateMutation.isPending ? 'Activating…' : 'Activate Season'}
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
