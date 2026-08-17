@@ -20,7 +20,7 @@ export default function CreateSeasonStep({ onSubmit, error, season, readOnly }: 
 
   return (
     <div className="p-8">
-      <h1 className="text-4xl font-serif font-medium mb-6">{readOnly ? season?.name : 'New Season'}</h1>
+      {readOnly && <h1 className="text-4xl font-serif font-medium mb-6">{season?.name}</h1>}
       <form
         id="create-season-form"
         onSubmit={(e) => {

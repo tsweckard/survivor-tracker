@@ -102,7 +102,7 @@ export default function SeasonSetup({ existingSeasonId, onBack }: { existingSeas
         </div>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col">
         {step === 1 && !activeSeasonId && (
           <CreateSeasonStep
             onSubmit={(data) => createMutation.mutate(data)}
