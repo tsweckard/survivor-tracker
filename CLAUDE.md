@@ -193,15 +193,21 @@ Maintain a `PATTERNS.md` in the repo root. When a pattern is implemented, add an
 │   │       └── simulation_service.rb      # Black box — scoring engine
 │   └── db/migrations/
 ├── frontend/
+│   ├── CLAUDE.md                  # Frontend-specific conventions (see below)
 │   ├── src/
 │   │   ├── components/
+│   │   │   └── ui/                # Reusable, domain-agnostic UI primitives
 │   │   ├── services/              # API client — components never call API directly
 │   │   ├── store/                 # Zustand
-│   │   └── types/                 # TypeScript definitions
+│   │   ├── types/                 # TypeScript definitions
+│   │   └── utils/                 # Pure formatting/calculation functions
 ├── SPEC.md                        # Product specification
 ├── CLAUDE.md                      # This file
 └── PATTERNS.md                    # Pattern implementation log (create when first pattern lands)
 ```
+
+**Frontend conventions** (component rules, styling, service layer, TypeScript) are in
+`frontend/CLAUDE.md`. Read it before touching frontend code.
 
 ---
 

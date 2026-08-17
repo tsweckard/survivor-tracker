@@ -10,4 +10,6 @@ class Season < ApplicationRecord
   validates :name, presence: true
   validates :game_phase, presence: true
   validates :status, presence: true
+  validates :season_number, uniqueness: true, allow_nil: true
+  validates :ended_on, absence: true, unless: :completed?
 end

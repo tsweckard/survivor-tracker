@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_28_195527) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_06_001716) do
   create_table "alliance_memberships", force: :cascade do |t|
     t.integer "alliance_id", null: false
     t.datetime "created_at", null: false
@@ -60,8 +60,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_195527) do
 
   create_table "seasons", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.date "ended_on"
     t.integer "game_phase", default: 0, null: false
+    t.string "location"
     t.string "name", null: false
+    t.date "premiered_on"
+    t.integer "season_number"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
   end
